@@ -1,0 +1,14 @@
+FROM golang:1.18.3-alpine3.16 AS build
+RUN apk add --no-cache git
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY ./cmd/deathstar ./
+RUN CGO_ENABLED=0 go build \
+    -installsuffix 'static' \
+    -o /app .
+
+FROM gcr.io/distroless/static AS final
+USER nonroot:nonroot
+COPY --from=build --chown=nonroot:nonroot /app /app
+ENTRYPOINT ["/app"]

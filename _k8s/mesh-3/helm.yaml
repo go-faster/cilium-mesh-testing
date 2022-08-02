@@ -1,0 +1,50 @@
+cluster:
+  id: 3
+  name: mesh-3
+encryption:
+  nodeEncryption: false
+ingressController:
+  enabled: true
+hubble:
+  enabled: true
+  ui:
+    enabled: true
+  relay:
+    enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - icmp
+      - http
+ipam:
+  mode: kubernetes
+kubeProxyReplacement: strict
+operator:
+  prometheus:
+    enabled: true
+  replicas: 1
+prometheus:
+  enabled: true
+proxy:
+  prometheus:
+    enabled: true
+serviceAccounts:
+  cilium:
+    name: cilium
+  operator:
+    name: cilium-operator
+hostServices:
+  enabled: true
+  protocols: tcp
+externalIPs:
+  enabled: true
+nodePort:
+  enabled: true
+#tunnel: vxlan
+pprof:
+  enabled: true
+k8sServiceHost: mesh-3-control-plane  # use control node in kind network
+k8sServicePort: 6443                  # use api server port
